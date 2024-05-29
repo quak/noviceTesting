@@ -1,0 +1,76 @@
+---
+
+const {article, isslider, showdescription} = Astro.props;
+
+var sliderclass = "";
+if(isslider==true){
+    sliderclass = "swiper-slide";
+}
+
+var descriptionclass = "";
+if(showdescription==true){
+    descriptionclass = "sm:block";
+}
+
+let url = '/'+article?.node?.categories?.nodes[0].slug+'/'+article?.node?.slug;
+let d = new Date(article?.node?.date);
+let datestring = d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear();
+
+let avtor ="";
+
+if(article?.node?.author?.node?.firstName!=null){
+    avtor = ""+article?.node?.author?.node?.firstName ;
+}
+if(article?.node?.author?.node?.lastName!=null){
+    avtor = avtor+" "+article?.node?.author?.node?.lastName ;
+}
+
+if(avtor == ""){
+    avtor="novice";
+}
+
+
+let personname =" ";
+			
+if(article?.node?.oseba?.name!=null){
+    personname = ""+article?.node?.oseba?.name ;
+}
+if(article?.node?.oseba?.surname!=null){
+    personname = personname+" "+article?.node?.oseba?.surname ;
+}
+
+let place = article?.node?.place?.place;
+let placeclass = "";
+if(place === null || place.trim()===0){
+    placeclass = "hidden";
+}
+
+let excerpt = (article?.node?.excerpt).replace(/<[^>]*>?/gm, '');
+---
+
+<a href={url} class="col-span-1  overflow-hidden" rel="prefetch-intent">
+    <article class="bg-sneg-white  flex flex-col md:flex-row justify-start gap-4">
+        
+        
+        <img class="ease-out duration-4000 transition-all hover:scale-103 max-h-36 grayscale"   src={article?.node?.featuredImage?.node?.sourceUrl} srcset={article?.node?.featuredImage?.node?.srcSet}/>
+
+        <div class=" flex flex-col justify-between w-full">
+            <div class="flex  flex-col md:flex-row gap-1 justify-between">
+                
+                <span class="uppercase flex flex-row items-center text-klopinj-blue tracking-widels text-lg">
+                    {datestring}
+                </span>
+
+                <span class="block uppercase px-2 bg-klopinj-blue text-white tracking-widels text-lg ">
+                    {place}
+                </span>
+                
+            </div>
+
+            <h3 class="text-3xl line-clamp-3 text-ellipsis leading-novice">{personname}</h3>
+            <span class="font-serif text-base mt-2 mb-1 line-clamp-3">Z<Fragment set:html={article?.node?.title}/></span>
+           
+        </div>
+    
+    </article>
+</a>

@@ -1,0 +1,480 @@
+---
+import {getAllSlugsOfCategories, getAllSlugsOfPages,getPageBySlugAlt } from '../../lib/api';
+
+import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+
+Astro.response.headers.set('Cache-Control', 's-maxage=10800')
+
+
+
+const { eventname } = Astro.params;
+ 
+const page = await getPageBySlugAlt(eventname);
+
+const blocks = page?.blocks;//page.blocks;
+const someProps = {
+	count: 0,
+};
+---
+
+
+
+<BaseLayout title="Novice SubCat">
+	
+	<section class="bg-sele-ivory px-1 md:px-4 py-12">
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+			<div class="flex flex-col w-full">
+				<div>
+					<h1 class="text-center uppercase text-4xl text-klopinj-blue font-light text-6xl mb-4">Prireditve · Termini</h1>
+				</div>
+				<div class="flex flex-col gap-4 mt-8">
+					<div class="flex justify-between items-center">
+						<div class="flex flex-row gap-4">
+							<a href=""><span class="uppercase bg-tag-grey text-xl px-4 rounded-2xl">Karikture</span></a>
+							<a href=""><span class="uppercase bg-tag-grey text-xl px-4 rounded-2xl">Karikature</span></a>
+						</div>
+						<div class="flex flex-row gap-4">
+							<div class="relative "><input type="text" name="account-number" id="searchfieldevents" class="focus:outline-none border-b border-black border-dotted w-full bg-transparent p-2 pr-0 text-3xl" placeholder="Išči"><div class="pointer-events-none absolute inset-y-0 right-0 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#0000000" id="magsearch" class="cursor-pointer bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></div></div>
+						</div>
+					</div>
+					<div class="relative flex justify-center">
+						<div class="block border-b border-black w-full"></div>
+						<img class="absolute max-h-36 -mt-16 hidden" src="/tmpimages/tdata/kks.png"/>
+					</div>
+					<div class="flex justify-between">
+						<div class="flex flex-row gap-4">
+							<a href=""><span class="uppercase bg-tag-grey text-xl px-4 rounded-2xl">Karikature</span></a>
+							<a href=""><span class="uppercase bg-tag-grey text-xl px-4 rounded-2xl">Karikature</span></a>
+						</div>
+						<div class="flex flex-row gap-4">
+							<a href=""><span class="uppercase bg-tag-grey text-xl px-4 rounded-2xl">Karikature</span></a>
+							<a href=""><span class="uppercase bg-tag-grey text-xl px-4 rounded-2xl">Karikature</span></a>
+						</div>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		
+	</section>
+
+
+	<section class=" px-1 md:px-4 py-12">
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width border-b border-black pb-8">
+			<div class="flex flex-row gap-4">
+				<div class="basis-1/6">
+					<p class="text-left uppercase text-4xl text-klopinj-blue font-light text-6xl mb-4">TOP</p>
+				</div>
+				<div class="basis-5/6 ">
+					<a href="/" class="flex flex-row gap-4">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-4xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-4xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		
+	</section>
+	<section class=" px-1 md:px-4 py-12">
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width  border-b border-black pb-8">
+			<div class="flex flex-row gap-4">
+				<div class="basis-full md:basis-1/6">
+					<p class="text-left uppercase text-4xl text-klopinj-blue font-light text-6xl mb-4">Danes</p>
+				</div>
+				<div class=" basis-full md:basis-5/6 grid grid-cols-2 gap-4 gap-y-12">
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-4xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-4xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-4xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-4xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl  font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-4xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-4xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl  font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-4xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-4xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-4xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-4xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-6">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+
+					
+				</div>
+			</div>
+		</div>
+		
+	</section>
+
+
+	<section class=" px-1 md:px-4 py-12">
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width  pb-8">
+			<div class="flex flex-col gap-4">
+				<div class="">
+					<p class=" uppercase text-4xl text-klopinj-blue font-light text-6xl mb-4">Kam?</p>
+				</div>
+				<div class=" grid grid-cols-4 gap-4">
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-4">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-3xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-2xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-4">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-4">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-3xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-2xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-4">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-4">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-3xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-2xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-4">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+					<a href="/" class="col-span-1 flex flex-col gap-4 border-b border-black">
+						<div class="basis-1/2">
+							<img src="/tmpimages/tdata/jepca.jpg"/>
+						</div>
+						<div class="basis-1/2">
+							<div class="flex flex-row gap-4">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 py-1 flex flex-col border border-black items-center">
+											<span class="text-xs uppercase tracking-widedate mt-1 ml-1.5 uppercase">Pet</span>
+											<span class="text-3xl font-bold text-klopinj-blue">19.10</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<h2 class=" text-2xl">Otvoritev mednarodnega lutkovnega festivala CIKLCAKL</h2>
+									</span>
+								</div>
+							</div>
+							<div class="flex flex-row gap-4">
+								<div class="basis-1/5 flex">
+									<div class="w-20">
+										<span class="px-2 flex flex-col items-center">
+											<span class="text-2xl font-bold text-papez-purple">19:30</span>
+										</span>
+									</div>
+								</div>
+								<div class="basis-4/5">
+									<span class="mb-4 block">
+										<p class="font-bold text-2xl uppercase text-papez-purple">Šmihel</p>
+										<p class="text-xl font-light">Farna dvorana</p>
+									</span>
+								</div>
+							</div>
+						</div>
+					</a>
+					
+
+					
+				</div>
+			</div>
+		</div>
+		
+	</section>
+	
+
+</BaseLayout>

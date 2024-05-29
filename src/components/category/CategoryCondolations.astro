@@ -1,0 +1,57 @@
+---
+import { getDeaths } from '../../lib/api';
+import Others from '../page/elements/others.astro'
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+let num_of_slider_elements_deaths = blckjsn?.data?.num_of_slider_elements_deaths;
+if (num_of_slider_elements_deaths === undefined){
+	num_of_slider_elements_deaths = '3';
+}
+
+
+let deaths = await getDeaths('["1658"]',parseInt(num_of_slider_elements_deaths));
+if(deaths === undefined){
+	deaths = new Array();
+}
+
+---
+
+
+
+<section class=" px-1 md:px-4 py-24 overflow-hidden">
+	
+
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width flex flex-wrap md:flex-nowrap gap-12">
+
+		<div class="basis-full md:basis-1/5 flex flex-col justify-between">
+			<h2 class="text-center uppercase text-4xl text-klopinj-blue font-light text-6xl flex justify-center leading-novice"><img src="/tmpimages/svgs/candle.svg">Odšli so</h2>
+			<div class="my-4 sm:my-0 flex justify-center"> 
+				<a href="/kategorije/kontakt/" class="flex gap-2"> 
+					<img src="/tmpimages/svgs/sendwish.svg"> 
+					<p class="max-w-24 font-serif text-xs">
+						Objavite osmrtnico. K formularju.
+					</p> 
+					
+				</a> 
+			</div>
+		</div>
+		<div class="basis-full md:basis-4/5 grid grid-cols-2 gap-12 flex-wrap">
+			
+			{deaths.map(function (article) {
+				
+				return (
+					<Others article={article} style="condolation"/>
+				);
+
+			})}
+
+
+			
+		
+		</div>
+	</div>
+
+</section>

@@ -1,0 +1,221 @@
+---
+import imagevi from "../../images/vi.png";
+import chevronright from "../../images/chevronright.svg";
+import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
+import { getPostByCategoryById,getDeaths } from '../../lib/api';
+import { getPotw } from '../../lib/persons';
+import Quarter from './elements/quarter.astro'
+import Third from './elements/third.astro'
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+let datacatid = blckjsn?.data?.blockcategory;
+if (datacatid === undefined){
+	datacatid = '["6"]';
+}
+
+
+let num_of_slider_elements_congrats = blckjsn?.data?.num_of_slider_elements_congrats;
+if (num_of_slider_elements_congrats === undefined){
+	num_of_slider_elements_congrats = '8';
+}
+
+
+let num_of_slider_elements_deaths = blckjsn?.data?.num_of_slider_elements_deaths;
+if (num_of_slider_elements_deaths === undefined){
+	num_of_slider_elements_deaths = '3';
+}
+
+
+//let people_articles = await getPostByCategoryById(["1641"],1);
+let potw = await getPotw();
+
+if(potw === undefined){
+	potw = new Array();
+}
+
+let congratulations = await getPostByCategoryById(["1442"],parseInt(num_of_slider_elements_congrats));
+if(congratulations === undefined){
+	congratulations = new Array();
+}
+
+let deaths = await getDeaths('["1658"]',parseInt(num_of_slider_elements_deaths));
+if(deaths === undefined){
+	deaths = new Array();
+}
+
+
+---
+
+
+<section class="bg-undef-lightgrey px-1 md:px-4 py-24">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width ">
+		<h2 class="col-span-2 font-light text-5xl text-klopinj-blue mb-2 uppercase flex justify-center items-center">osebe 
+			<span class="px-4">
+				
+				<Image width="80" src={imagevi} loading="eager" alt="Osebe icon"/>
+			</span> 
+		dogodtki</h2>
+	</div>
+	
+	<div class="grid grid-cols-6 grid-flow-row md:grid-flow-col gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		
+
+		{potw.map(function (article,k) {
+			
+			let url = '/osebe/'+article.post.post_name;
+			let classes_lr="";
+			let personname =" ";
+				if(article?.acf?.name!=null){
+						personname = ""+article?.acf?.name ;
+					}
+					if(article?.acf?.surname!=null){
+						personname = personname+" "+article?.acf?.surname ;
+					}
+				return (
+
+					<a href={url} class="col-span-6 md:col-span-4" >
+			
+						<article class="relative">
+							<div class="overflow-hidden">
+								<Picture width="733" height="413" class="ease-out duration-4000 transition-all hover:scale-103" src={article?.thumb}  loading="lazy" alt={article?.post?.post_title}/>
+								
+							</div>
+							<div class="relative sm:absolute p-4 bottom-0 ">
+								
+								
+								<span class="z-20 relative">
+									<span class="bg-papez-purple text-gmajnsko-brown uppercase px-4 text-lg mb-2 inline-block">obraz tedna</span><span class="bg-sele-ivory uppercase px-4  text-lg mb-2 inline-block">{personname}</span>
+								
+									<h2 class="sm:text-sele-ivory text-2xl sm:text-4xl leading-novice"><Fragment set:html={article.post.post_title}/></h2>
+								
+								</span>
+								<div class="hidden sm:block z-10" style="position: absolute; top:0;left:0; width:100%;height:100%;background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
+							</div>	
+						</article>
+
+					</a>
+						
+					<span class="hidden sm:block col-span-6 md:col-span-4 flex flex-col justify-center pl-12">
+						<p class=" text-gmajnsko-brown text-4xl line-clamp-5 text-ellipsis leading-novice">»{article.acf.citat}«</p>
+						<p class=" text-gmajnsko-brown mt-4 text-xl">{personname}</p>
+					</span>
+				
+				);
+			
+
+		})}
+		
+	</div>
+
+	
+	<div class="mt-8 bg-sele-ivory overflow-hidden"></div>
+	
+	
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width flex flex-row justify-between items-center">
+					
+			<h2 class="font-light text-5xl text-klopinj-blue mb-2 uppercase ">čestitamo</h2>
+			<a href="/kategorije/kontakt/" class="flex gap-2  hover-svgbutton"> 
+				
+
+				<svg xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 16 16" fill="currentColor" class="max-h-12 fill-klopinj-blue " >
+					<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+					<path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+				  </svg>
+
+				
+				<p class="max-w-20 font-serif text-xs">
+					Pošljite Vašo čestitko.
+				</p> 
+			</a> 
+		</div>
+	
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width swiper overflow-hidden relative">
+			<div class="swiper-wrapper">
+	
+				{congratulations.map(function (article,k) {
+					
+						return (
+							<Quarter article={article} style="congratulations2" isslider={true} bg={true}/>
+						);
+	
+				})}
+				
+			</div>
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+		</div>
+	</div>
+
+	
+
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width  mt-8">
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width flex flex-row justify-between  items-center">
+			<h2 class="col-span-2 font-light text-5xl text-klopinj-blue mb-2 uppercase  text-center">odšli so ...</h2>
+			
+			<a href="/kategorije/kontakt/" class="flex gap-2 hover-svgbutton"> 
+				
+				<svg xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 16 16" fill="currentColor" class="max-h-12 fill-klopinj-blue " >
+					<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+					<path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+				  </svg>
+
+				<p class="max-w-20 font-serif text-xs">
+					Pošljite osmrtnico.
+				</p> 
+			</a> 
+		</div>
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width swipercongrats  overflow-hidden relative">
+			<div class="swiper-wrapper">
+		
+			{deaths.map(function (article,k) {
+					return (
+						<Third article={article} style="condolations" isslider={true} />
+					);
+			})}
+			
+			</div>
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+		</div>
+	</div>
+</section>
+
+
+
+<script>
+	import Swiper from 'swiper';
+	
+	import { Navigation, Pagination } from 'swiper/modules';
+	import 'swiper/css/bundle';
+	document.addEventListener('astro:page-load', () => {
+		const swiper = new Swiper('.swipercongrats', {
+			// Optional parameters
+			modules: [Navigation, Pagination],
+			direction: 'horizontal',
+			loop: true,
+			slidesPerView: 1,
+			spaceBetween: 16,
+			
+			// Navigation arrows
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+			
+			breakpoints: {
+				480: {
+				slidesPerView: 2,
+				},
+				768: {
+				slidesPerView: 3,
+				}
+			}
+			
+		});
+		
+	});
+</script>

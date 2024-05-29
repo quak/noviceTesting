@@ -1,0 +1,162 @@
+---
+
+import sendGrid from '@sendgrid/mail';
+
+
+
+sendGrid.setApiKey( import.meta.env.SENDGRID_API_KEY );
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+let showconfirmationclass = "hidden";
+
+if (Astro.request.method === 'POST') {
+  try{
+    // Getting posted data from our contact form
+    const data = await Astro.request.formData();
+	
+    const firstname = data.get('first-name');
+    const secondname = data.get('last-name');
+	const name = firstname +" "+ secondname;
+    const email = data.get('email');
+    const address = data.get('street-address');
+	const pc = data.get('postal-code');
+	const region = data.get('region');
+
+    const message = name +" ; "+ email +" ; "+ email +" ; "+ address +" ; "+ pc +" ; "+ region ;
+
+    // TODO: Do not forget to do validation and error handling over received data from your contact form.
+
+    // Sending email
+    const msg = {
+      to: 'office@avax.at', // Kam poslješ zdaj na office poj na naročnina@novice.at
+      from: 'augustin.malle@gmail.com', // <--------------------Sem pride nekaj office@novice.at / poj ko verificiraš
+      replyTo: {email:email, name:name},
+      subject: 'Naročilo - '+name,
+      text: message,
+    }
+    await sendGrid.send(msg).then(() => {
+      
+	  showconfirmationclass="";
+    }).catch((error) => {
+      console.error(error)
+    });
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+---
+<section class="bg-sele-ivory px-1 md:px-4 py-24">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		<form method="post">
+			<div class="space-y-12">
+			  
+			  <div class="grid grid-cols-3 sm:grid-cols-3 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12">
+				<div class={`col-span-3 py-4 text-center `+showconfirmationclass}> 
+					<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+						<p class="p-2 bg-papez-purple text-sele-ivory uppercase sm:px-4 text-lg sm:text-xl  tracking-widels"> Hvala za sporočilo</p>
+					</div>
+				</div>
+				<div class="col-span-3 sm:col-span-2">
+					<h2 class="block leading-6 uppercase text-3xl font-bold tracking-widels">Naroči novice</h2>
+				</div>
+		  
+				<div class="grid col-span-3 sm:col-span-2 max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 ">
+					<div class="block sm:hidden">
+						<p class="mt-6 text-xl font-serif">Letna naročnina:</p>
+						<p class="mt-2 text-xl font-serif">za Avstrijo in Slovenijo € 58,-</p>
+						<p class="text-xl font-serif">za druge države: € 75.-</p>
+					</div>
+
+				  <div class="sm:col-span-3">
+					<label for="first-name" class="block leading-6 uppercase text-xl tracking-widels">Ime</label>
+					<div class="mt-2">
+					  <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 py-3 px-4 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-papez-purple sm:text-lg sm:leading-6 font-serif">
+					</div>
+				  </div>
+		  
+				  <div class="sm:col-span-3">
+					<label for="last-name" class="block leading-6 uppercase text-xl tracking-widels">Priimek</label>
+					<div class="mt-2">
+					  <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 py-3 px-4 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-papez-purple sm:text-lg sm:leading-6 font-serif">
+					</div>
+				  </div>
+		  
+				  <div class="sm:col-span-4">
+					<label for="email" class="block leading-6 uppercase text-xl tracking-widels">E-pošta</label>
+					<div class="mt-2">
+					  <input id="email" name="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-3 px-4 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-papez-purple sm:text-lg sm:leading-6 font-serif">
+					</div>
+				  </div>
+		  
+				  <div class="sm:col-span-4 sm:col-start-1">
+					<label for="street-address" class="block leading-6 uppercase text-xl tracking-widels">Ulica in hišna številka</label>
+					<div class="mt-2">
+					  <input type="text" name="street-address" id="street-address" autocomplete="street-address" class="block w-full rounded-md border-0 py-3 px-4 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-papez-purple sm:text-lg sm:leading-6 font-serif">
+					</div>
+				  </div>
+		  
+				  <div class="sm:col-span-3">
+					<label for="postal-code" class="block leading-6 uppercase text-xl tracking-widels">Poštna številka</label>
+					<div class="mt-2">
+					  <input type="text" name="postal-code" id="region" autocomplete="postal-code" class="block w-full rounded-md border-0 py-3 px-4 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-papez-purple sm:text-lg sm:leading-6 font-serif">
+					</div>
+				  </div>
+		  
+				  <div class="sm:col-span-3">
+					<label for="city" class="block leading-6 uppercase text-xl tracking-widels">Kraj</label>
+					<div class="mt-2">
+					  <input type="text" name="city" id="postal-code" autocomplete="address-level2" class="block w-full rounded-md border-0 py-3 px-4 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-papez-purple sm:text-lg sm:leading-6 font-serif">
+					</div>
+				  </div>
+
+				</div>
+				<div class="flex flex-col justify-between col-span-3 sm:col-span-1">
+					<div class="hidden sm:block">
+						<p class="mt-6 text-xl font-serif">Letna naročnina:</p>
+						<p class="mt-2 text-xl font-serif">za Avstrijo in Slovenijo € 58,-</p>
+						<p class="text-xl font-serif">za druge države: € 75.-</p>
+					</div>
+					
+					<div class="mt-6 flex items-center justify-start gap-x-6">
+						<button type="submit" class="bg-papez-purple px-6 py-2 text-xl uppercase tracking-widels text-white shadow-sm hover:papez-purple focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-papez-purple "
+							>Naroči</button>
+						
+					  </div>
+				</div>
+			  </div>
+			  
+		  
+			  
+			</div>
+		  
+			
+		  </form>
+	</div>
+
+
+</section>
+
+
+<script is:inline>
+	function onSubmit(token) {
+	  fetch("/recaptcha", {
+		method: "POST",
+		body: JSON.stringify({ recaptcha: token })
+	  })
+	  .then((response) => response.json())
+	  .then((gResponse) => {
+		if (gResponse.success) {
+		  // Captcha verification was a success
+		  console.log("vredu");
+		} else {
+		  // Captcha verification failed
+		  console.log("eee");
+		}
+	  })
+	}
+  </script>

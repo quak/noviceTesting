@@ -1,0 +1,28 @@
+---
+
+
+import * as use from '../index.js';
+
+const {block} = Astro.props;
+
+const parsedJSON = JSON.parse(block.attributesJSON);
+const content = parsedJSON.content;
+const level = parsedJSON.level;
+
+const dc = parsedJSON.content;
+---
+
+
+<div class="flex sm:justify-end">
+<use.switch name={level}>
+    <use.case slot={null}>Return:null</use.case>
+    <use.case slot={undefined}>Return:Undefined</use.case>
+    <use.case slot={'1'}><h1 class="sm:basis-3/4 text-4xl mb-4 mt-6"><Fragment set:html={content} /></h1></use.case>
+    <use.case slot={'2'}><h2 class="sm:basis-3/4 text-4xl mb-4 mt-6"><Fragment set:html={content} /></h2></use.case>
+    <use.case slot={'3'}><h3 class="sm:basis-3/4 text-2xl mb-4 mt-6"><Fragment set:html={content} /></h3></use.case>
+    <use.case slot={'4'}><h4 class="sm:basis-3/4 text-xl mb-4 mt-6"><Fragment set:html={content} /></h4></use.case>
+    <use.default>
+        <span class="novalidheading"></span>
+    </use.default>
+  </use.switch>
+</div>

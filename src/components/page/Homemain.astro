@@ -1,0 +1,134 @@
+---
+import { getAds } from '../../lib/ads';
+import { getPostByCategoryById } from '../../lib/api';
+import EventsHome from '../react/EventsHome'; 
+import Third from './elements/third.astro';
+import Twothirds from './elements/twothirds.astro';
+
+import { getImageByIds } from '../../lib/api';
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+let datacatid = blckjsn?.data?.blockcategory;
+if (datacatid === undefined){
+	datacatid = '["6"]';
+}
+
+let articles = await getPostByCategoryById(datacatid,3);
+if(articles === undefined){
+	articles = new Array();
+}
+
+let ads = await getAds();
+
+
+let imgleft ="";
+let imgright ="";
+let imgl ="";
+let imgr ="";
+
+let sourceUrll = "";
+let sourceUrlr = "";
+
+if(ads){
+    
+    imgleft = await getImageByIds(ads?.adleft?.image);
+    imgright = await getImageByIds(ads?.adright?.image);
+
+    if(imgleft.length !== 0){
+        imgl = imgleft[0].node;
+        if(imgl.sourceUrl != null){
+            sourceUrll = imgl.sourceUrl;
+        }
+    }
+	if(imgright.length !== 0){
+        imgr = imgright[0].node;
+        if(imgr.sourceUrl != null){
+            sourceUrlr = imgr.sourceUrl;
+        }
+    }
+    
+}
+
+
+
+---
+
+<section class="bg-sele-ivory px-1 md:px-4 pt-4 md:pt-12 pb-8 md:pb-24 flex gap-4">
+
+	<div class="hidden 2xl:flex flex-1  justify-end">
+		<a href={ads?.adleft?.povezava?.url} target="_blank">
+			<img src={sourceUrll}>
+		</a>
+	</div>
+
+	<div class="grid grid-cols-3 gap-4 lg:w-lg 2xl:w-2xl mx-auto 2xl:mx-0">
+		<div class="col-span-3 md:col-span-2">
+			
+			<div class="grid grid-cols-2 gap-4">
+				{articles.map(function (article,k) {
+					
+					let url = '/'+article?.node?.categories?.nodes[0].slug+'/'+article?.node?.slug;
+					let classes_lr="";
+
+					let place = article?.node?.place?.place;
+					let placeclass = "";
+					if(place === null || place.trim()===0){
+						placeclass = "hidden";
+					}
+
+
+					let d = new Date(article?.node?.date);
+					let datestring = d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear();
+					/********* */
+						let avtor ="";
+
+						if(article?.node?.author?.node?.firstName!=null){
+							avtor = ""+article?.node?.author?.node?.firstName ;
+						}
+						if(article?.node?.author?.node?.lastName!=null){
+							avtor = avtor+" "+article?.node?.author?.node?.lastName ;
+						}
+
+						if(avtor == ""){
+							avtor="novice";
+						}
+					/********* */
+					
+					if(k==0){
+						return (
+							<Twothirds article={article} shouldll="false"/>
+						);
+					}
+
+					if(k>0){		
+						return (
+							<Third article={article} style="normal" isslider="false" showdescription="false" shouldll="false"/>
+						);
+					}
+		
+				})}
+				
+				
+			</div>
+		</div>
+		<div class="col-span-3 md:col-span-1 flex flex-col">
+			<div class="flex flex-row border-b-2 border-dashed border-jepa-grey border-dashed justify-between items-center mb-2">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16" data-astro-source-file="/Users/ama/Dropbox/Mac (2)/Desktop/noviceNew/src/components/article/Articlefooter.astro" data-astro-source-loc="48:151"> <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" ></path> </svg>
+				<h2 class="col-span-2 font-light text-5xl text-klopinj-blue uppercase text-center leading-novice">Prireditve</h2>
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16" data-astro-source-file="/Users/ama/Dropbox/Mac (2)/Desktop/noviceNew/src/components/article/Articlefooter.astro" data-astro-source-loc="53:152"> <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" ></path> </svg>
+			</div>
+			
+			<EventsHome client:load />
+
+		</div>
+	</div>
+
+	<div class="hidden 2xl:flex flex-1  justify-start">
+		<a href={ads?.adright?.povezava?.url} target="_blank">
+			<img src={sourceUrlr}>
+		</a>
+	</div>
+
+</section>

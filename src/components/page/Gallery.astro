@@ -1,0 +1,101 @@
+---
+
+import HalfBig from './elements/half.astro'
+import QuarterBig from './elements/quarter.astro'
+import { getPostByCategoryById } from '../../lib/api';
+
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+let datacatid = blckjsn?.data?.blockcategory;
+if (datacatid === undefined){
+	datacatid = '["6"]';
+}
+
+let articles = await getPostByCategoryById(datacatid,20);
+if(articles === undefined){
+	articles = new Array();
+}
+const articles12 = articles.slice(0,2);
+const articles3x = articles.slice(3,100);
+
+
+---
+
+
+<section class="bg-klopinj-blue px-1 md:px-4 py-12 md:py-24">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		<h2 class="col-span-2 font-light text-5xl text-white mb-2 uppercase text-center">galerije</h2>
+	</div>
+	
+	<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width mb-4">
+		
+		{articles12.map(function (article,k) {
+						
+				return (
+
+					<HalfBig article={article} style="normal"/>	
+
+				);
+		
+		})}
+		
+	</div>
+
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width swiper overflow-hidden relative ">
+		<div class="swiper-wrapper">
+
+			{articles3x.map(function (article,k) {
+				
+					return (
+
+						<QuarterBig article={article} style="big" isslider={true}  showdescription={false}/>
+				
+					);
+	
+			})}
+			
+		</div>
+		<div class="swiper-button-prev"></div>
+		<div class="swiper-button-next"></div>
+	</div>
+</section>
+
+
+<script>
+	import Swiper from 'swiper';
+	import { Navigation, Pagination } from 'swiper/modules';
+	
+	// import styles bundle
+	import 'swiper/css';
+	import 'swiper/css/navigation';
+	import 'swiper/css/pagination';
+	document.addEventListener('astro:page-load', () => {
+			// init Swiper:
+			const swiper = new Swiper('.swiper', {
+			// Optional parameters
+			modules: [Navigation, Pagination],
+			direction: 'horizontal',
+			loop: true,
+			slidesPerView: 1,
+			spaceBetween: 16,
+
+			// Navigation arrows
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+
+			breakpoints: {
+				480: {
+				slidesPerView: 2,
+				},
+				768: {
+				slidesPerView: 4,
+				}
+			}
+
+			});
+		});
+  </script>

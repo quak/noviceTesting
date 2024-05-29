@@ -1,0 +1,56 @@
+---
+
+import ThirdR from './elements/thirdr.astro'
+import { getLastArticles } from '../../lib/article';
+
+
+const {block} = Astro.props;
+
+let articles = await getLastArticles();
+
+let articles1= new Array();
+let articles2= new Array();
+if(articles === undefined){
+	articles = new Array();
+}else{
+	articles1 = articles.slice(0, 3);
+	articles2 = articles.slice(3, 6);	
+}
+
+
+---
+
+
+<section class="bg-sele-ivory px-1 md:px-4 py-8 py-12 md:py-24">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		
+		<h2 class="col-span-2 font-light text-5xl text-klopinj-blue mb-2 uppercase text-center">Zadnje novice</h2>
+	</div>
+	<div class="grid grid-cols-1 sm:grid-cols-3 md:grid-flow-row  mt-4 gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		{articles1.map(function (article,k) {
+					
+			return (
+				<ThirdR article={article} style="normal" isslider="false" showdescription="false"/>
+			);
+			
+		
+		})}
+			
+		
+		
+	</div>
+	<div class="grid grid-cols-1 sm:grid-cols-3 md:grid-flow-row  mt-4 gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		
+		{articles2.map(function (article,k) {
+					
+			
+			return (
+				<ThirdR article={article} style="normal" isslider="false" showdescription="false"/>
+			);
+			
+		
+		})}
+		
+		
+	</div>
+</section>

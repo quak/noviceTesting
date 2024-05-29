@@ -1,0 +1,90 @@
+---
+import { getOpinionPosts } from '../../lib/api';
+import { getStrips } from '../../lib/article';
+import Third from '../page/elements/third.astro'
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+
+
+
+let articles = await getOpinionPosts(995,2);
+
+if(articles === undefined){
+	articles = new Array();
+}
+
+const opinion1 = articles.slice(0,1);
+const opinion2 = articles.slice(1,2);
+
+let strips = await getStrips();
+
+---
+
+
+<section class=" px-1 md:px-4 py-12 overflow-hidden ">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width grid gap-4">
+
+		{opinion1.map(function (article) {
+				
+			return (
+				<Third article={article} style="opinion"/>
+			);
+
+		})}
+
+		<div class="row-start-1 col-span-2 md:col-span-1 md:row-start-1 md:basis-1/3 bg-iskanje-tags-grey relative">
+			
+			<img src=""/>
+
+			<div class="w-full block">
+
+				{strips.map(function (strip,k) {
+					let hideclass= "";
+					if(k>0){
+						hideclass="hidden";
+					}
+					
+					return (
+						<a href={strip.big} class={`mb-4 sm:mb-0 glightbox ${hideclass}`} data-gallery="stripi" data-title={strip.post_title} data-description={strip.post_content}>
+                            <img class=" w-full h-auto" src={strip.thumb} alt={strip.post_title}/>
+							<img class="mx-auto py-4" src="/tmpimages/tdata/16.png"/>
+							<h2 class="uppercase text-papez-purple font-bold text-center text-2xl sm:text-4xl">{strip.author}</h2>
+							<p class=" text-center font-bold text-2xl sm:text-4xl leading-novice line-clamp-3">{strip.post_title}</p>
+
+							<div class="mb-8 sm:mb-0 flex justify-center ">  
+								<img class="absolute bottom-0 mx-auto -mb-8" src="/tmpimages/svgs/add.svg"/>
+							</div>
+                        </a>
+					);
+		
+				})}
+		
+
+			</div>
+
+		</div>
+
+		{opinion2.map(function (article) {
+				
+			return (
+				<Third article={article} style="opinion"/>
+			);
+
+		})}
+		
+	</div>
+</section>
+
+<script>
+	import GLightbox from 'glightbox';
+	const lightbox = GLightbox({
+		touchNavigation: true,
+		loop: true,
+		autoplayVideos: true
+	});
+	
+	
+</script>

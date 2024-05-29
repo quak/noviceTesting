@@ -1,0 +1,109 @@
+---
+
+
+import { getPostByCategoryBySlug, goSearch } from '../lib/api';
+
+
+const {} = Astro.props;
+
+let datacatid = '["6"]';
+
+
+let sr = await getPostByCategoryBySlug(datacatid,5);
+if(sr === undefined){
+	sr = new Array();
+}
+---
+<div class="transition-all duration-700 absolute -translate-y-full w-full z-40 drop-shadow-md " id="searchmenu" aria-label="searcharia">
+
+
+	<section class="bg-iskanje-grey px-1 md:px-4 pt-4 pb-4">
+
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width grid grid-cols-3 items-center">
+			<a href="/" class="col-start-2 mx-auto">
+				<img class="h-12 max-h-20" src="/tmpimages/novice_logo.svg" alt="Logo">
+			</a>
+
+			<svg xmlns="http://www.w3.org/2000/svg" id="searchclosebutton" width="32" height="32" fill="currentColor" class="justify-self-end cursor-pointer bi bi-x-lg col-start-3" viewBox="0 0 16 16">
+				<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+			</svg>
+		</div>
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width ">
+			
+			<div class="grid grid-cols-6 gap-12 mb-4"> 
+				<div class="col-span-4 md:col-span-1 flex flex-col justify-around order-8 sm:order-1">
+					
+				</div>
+				<div class="col-span-6 md:col-span-4 text-xl hyphens-none order-1 sm:order-8">
+					<div class="relative ">
+			
+						<input type="text" name="account-number" id="searchfield" class="focus:outline-none border-b border-black border-dotted w-full bg-transparent my-4 p-2 pr-0 text-3xl" placeholder="Išči">
+						<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#0000000" id="magsearch" class="cursor-pointer bi bi-search" viewBox="0 0 16 16">
+								<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+							</svg>
+						</div>
+
+					</div>
+
+					<div class="hidden"> 
+						<h3 class=" text-lg uppercase tracking-widels text-papez-purple ">Priljubljena gesla</h3>
+						<div class="mt-4 flex gap-4 flex-wrap">
+							<span class="uppercase bg-tag-grey text-xl px-4 rounded-xl leading-8 tracking-widels">Einspielerjeva nagrada</span>
+							<span class="uppercase bg-tag-grey text-xl px-4 rounded-xl leading-8 tracking-widels">SAK</span>
+							<span class="uppercase bg-tag-grey text-xl px-4 rounded-xl leading-8 tracking-widels">pisma bralcev</span>
+							<span class="uppercase bg-tag-grey text-xl px-4 rounded-xl leading-8 tracking-widels">Pliberški jormark</span>
+							<span class="uppercase bg-tag-grey text-xl px-4 rounded-xl leading-8 tracking-widels">Izlet Novic</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+
+		</div>
+
+
+	</section>
+
+
+	<section class="bg-iskanje-pes px-1 md:px-4 pt-4 pb-12 hidden"  id="searchresultswrapper">
+
+		<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width ">
+			
+			<div class="w-full border-b pb-4 border-iskanje-dark-pes mt-8">
+				<h2 class="text-5xl uppercase text-klopinj-blue font-light">Rezultati za: <span class="text-papez-purple font-bold text-6xl normal-case" id="searchtermrepeat">Sele</span></h2>
+			</div>
+
+			<div class="grid grid-cols-6 gap-12 my-8">
+				<div class="hidden md:block col-span-4 md:col-span-1 order-8 sm:order-1">
+					<p class="text-3xl uppercase tracking-widedate text-iskanje-dark-pes font-light tracking-widerls">Prireditve</p>
+				</div>
+				
+				<div class="col-span-6 md:col-span-5 text-xl hyphens-none order-1 sm:order-8 swipercongrats overflow-hidden relative" >
+					<div class="swiper-wrapper overflow-hidden flex" id="searchresultsevents">
+						
+					</div>
+					<div class="swiper-button-prev"></div>
+					<div class="swiper-button-next"></div>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-6 gap-12 my-8">
+				<div class="hidden md:block col-span-4 md:col-span-1 order-8 sm:order-1">
+					<p class="text-3xl uppercase tracking-widedate text-iskanje-dark-pes font-light tracking-widerls">Članki</p>
+				</div>
+				
+				<div class="col-span-6 md:col-span-5 text-xl hyphens-none order-1 sm:order-8" id="searchresults">
+					
+				</div>
+			</div>
+
+			
+
+		</div>
+
+
+	</section>
+
+</div>

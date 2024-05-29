@@ -1,0 +1,50 @@
+---
+
+
+import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticlesForPlace from '../../components/react/ArticlesForPlace'; 
+
+
+Astro.response.headers.set('Cache-Control', 's-maxage=10800')
+
+const { kraj } = Astro.params;
+
+const kraj_sl = "Celovec";
+const kraj_at = "Klagenfurt";
+
+
+---
+
+
+<BaseLayout pageTitle="Projektorisch">
+  
+    <section class="bg-kosuta-grey px-1 md:px-4 pt-12 overflow-hidden">
+        <div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+            <div class="flex flex-col w-full items-center">
+                <div class="bg-klopinj-blue rounded-lg p-3 max-w-72 aspect-ktabla my-4">
+                    <div class=" bg-sneg-white">
+                        <h1 class="text-center uppercase text-3xl text-klopinj-blue font-light md:text-4xl lg:text-5xl mx-8 leading-novice py-6">
+                            <span class="block">{kraj_sl}</span>
+                            <span class="block mt-2">{kraj_at}</span>
+                        </h1>
+                    </div>
+                </div>
+                
+            
+            </div>
+        </div>
+        
+    </section>
+  <section class="px-1 md:px-4 md:pt-12 pb-24">
+      <div class=" mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+        
+       
+            <ArticlesForPlace place={kraj} client:load />
+        
+      </div>
+  </section>
+
+
+</BaseLayout>
+

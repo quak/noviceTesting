@@ -1,0 +1,17 @@
+---
+import { voidElementNames } from "astro/dist/runtime/server";
+
+const { name,i } = Astro.props;
+const key = name;
+
+let html: string;
+
+if (Astro.slots.has(key)) {
+	html = await Astro.slots.render(key);
+	
+} else if (Astro.slots.has('default')) {
+	html = await Astro.slots.render('default');
+}
+---
+
+<Fragment set:html={html} />

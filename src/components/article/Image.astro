@@ -1,0 +1,73 @@
+---
+
+import { getImageByIds } from '../../lib/api';
+const {block} = Astro.props;
+
+const parsedJSON = JSON.parse(block.attributesJSON);
+
+const parsedJSON1 = parsedJSON;
+const imageid = parsedJSON?.data?.image;
+
+var smallsize = parsedJSON?.data?.smallsize;
+
+
+let smallsizeclass ="w-full my-6 flex flex-col justify-end";
+smallsize = 1;
+if(smallsize==1){
+    smallsizeclass = "sm:basis-3/4 w-full my-6 flex flex-col justify-end";
+}
+
+let img ="";
+let image = "";
+let title = "";
+let sourceUrl = "";
+let caption = "";
+let description = "";
+let copyright = "Novice";
+if(imageid){
+    
+    img = await getImageByIds(imageid);
+    
+    if(img){
+        image = img[0].node;
+    
+        if(image.title != null){
+            title = image.title;
+        }
+
+        if(image.sourceUrl != null){
+            sourceUrl = image.sourceUrl;
+        }
+
+        if(image.description != null){
+            description = image.description;
+        }
+
+
+        if(image.caption != null){
+            caption = image.caption;
+        }
+    }
+    
+    
+}
+
+---
+<div class="flex justify-end">
+
+    <div class={smallsizeclass}>
+        
+        <a href={sourceUrl} class="glightbox" data-title={title} data-description={caption}>
+            <img transition:name={sourceUrl} src={sourceUrl} alt={description}/>
+        </a>
+        
+        <div class="border-b border-black flex flex-row justify-between py-2 items-center">
+
+            <span class="font-serif italic"> <Fragment set:html={caption}/> </span>
+            <p class="text-sm text-karavansko-grey">© {copyright}</p>
+
+        </div>
+
+    </div>
+
+</div>

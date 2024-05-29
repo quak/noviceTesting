@@ -1,0 +1,52 @@
+---
+import { getImageByIds } from '../../lib/api';
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+const imageid = blckjsn?.data?.oglas;
+
+let img ="";
+let image = "";
+let title = "";
+let sourceUrl = "";
+let caption = "";
+let description = "";
+let copyright = "Novice";
+if(imageid){
+    
+    img = await getImageByIds(imageid);
+    
+    if(img){
+        image = img[0].node;
+    
+        if(image.title != null){
+            title = image.title;
+        }
+
+        if(image.sourceUrl != null){
+            sourceUrl = image.sourceUrl;
+        }
+
+        if(image.description != null){
+            description = image.description;
+        }
+
+
+        if(image.caption != null){
+            caption = image.caption;
+        }
+    }
+    
+    
+}
+---
+
+
+<section class="bg-sele-ivory" >
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		<a href={sourceUrl} class="glightbox" data-title={title} data-description={caption}>
+            <img class="mx-auto" transition:name={sourceUrl} src={sourceUrl} alt={description}/>
+        </a>
+	</div>
+</section>

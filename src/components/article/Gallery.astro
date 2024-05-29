@@ -1,0 +1,136 @@
+---
+
+import { getImagesByIds } from '../../lib/api';
+const {block,index} = Astro.props;
+
+
+const parsedJSON = JSON.parse(block.attributesJSON);
+
+const parsedJSON1 = parsedJSON;
+
+const lightboxclass = "lightbox"+index;
+
+const imageid = parsedJSON?.data?.image;
+
+
+const smallsize = parsedJSON?.data?.smallsize;
+const galtitle = parsedJSON?.data?.title;
+const imageids = parsedJSON?.data?.gallery;
+
+let smallsizeclass ="w-full my-6 flex flex-col justify-end pb-2 md:pb-8 px-2 md:px-8 border";
+if(smallsize==1){
+    smallsizeclass = "sm:basis-3/4 w-full my-6 flex flex-col justify-end pb-2 md:pb-8 px-2 md:px-8 border";
+}
+
+let images = new Array();
+let imgs ="";
+let image = "";
+let title = "";
+let sourceUrl = "";
+let caption = "";
+let description = "";
+let copyright = "Novice";
+
+if(imageids){
+
+    //["87376","87366"]
+    
+    //
+    imgs = await getImagesByIds('"'+imageids.join('","')+'"');
+    
+    images = Object.values(imgs);
+    /*
+    for (let i=0; i<imgs.length; i++) {
+        //images[i]["sourceUrl"] 
+
+
+        image = imgs.node;
+    
+
+        if(image.title != null){
+            title = image.title;
+        }
+
+        if(image.copyright.copyright != null){
+            copyright = image.copyright.copyright;
+        }
+
+        if(image.sourceUrl != null){
+            sourceUrl = image.sourceUrl;
+        }
+
+        if(image.description != null){
+            description = image.description;
+        }
+
+
+        if(image.caption != null){
+            caption = image.caption;
+        }
+    }
+    */
+    
+    
+}
+
+---
+
+<div class="flex justify-end mt-8">
+
+    <div class={smallsizeclass}>
+        <h2 class="text-center text-2xl pb-2 mt-2">{galtitle}</h2>
+        <div class="grid grid-cols-6 gap-2">
+
+        {images.map(function (imagewrapper,k) {
+            
+            if(imagewrapper){
+                
+                image = imagewrapper.node;
+                
+
+                if(image.title != null){
+                    title = image.title;
+                }
+/*
+                if(image.copyright.copyright != null){
+                    copyright = image.copyright.copyright;
+                }
+*/
+                if(image.sourceUrl != null){
+                    sourceUrl = image.sourceUrl;
+                }
+
+                if(image.description != null){
+                    description = image.description;
+                }
+
+
+                if(image.caption != null){
+                    caption = image.caption;
+                }
+                
+            }
+            
+            let imgsizeclasses = "tile col-span-6";
+            if(k>6){
+                imgsizeclasses = "tile col-span-1 hidden";
+            }else if(k!=0){
+                imgsizeclasses = "tile col-span-1";
+            }
+            
+            return (
+
+                
+                    <div class={imgsizeclasses}>
+                        <a href={sourceUrl} class="glightbox" data-gallery={lightboxclass} data-title={title} data-description={caption}>
+                            <img transition:name={sourceUrl} src={sourceUrl} alt={description}/>
+                        </a>
+                    </div>    
+
+                
+            );
+        })}
+    </div>
+</div>
+
+</div>

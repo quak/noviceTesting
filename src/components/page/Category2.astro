@@ -1,0 +1,69 @@
+---
+
+import Half from './elements/half.astro'
+import Third from './elements/third.astro'
+import Quarter from './elements/quarter.astro'
+import { getPostByCategoryById } from '../../lib/api';
+
+const {block} = Astro.props;
+
+
+const blckjsn = JSON.parse(block.attributesJSON);
+let datacatid = blckjsn?.data?.blockcategory;
+if (datacatid === undefined){
+	datacatid = '["6"]';
+}
+
+let articles = await getPostByCategoryById(datacatid,10);
+if(articles === undefined){
+	articles = new Array();
+}
+const articlesrow1 = articles.slice(0,2);
+const articlesrow2 = articles.slice(2,5);
+const articlesrow3 = articles.slice(5,9);
+
+---
+
+
+<section class="bg-sele-ivory px-1 md:px-4 py-12 md:py-24">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		<h2 class="col-span-2 font-light text-5xl text-klopinj-blue mb-2 uppercase text-center">Kultura</h2>
+	</div>
+	<div class="grid grid-cols-2 sm:grid-cols-4  md:grid-flow-row  gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		{articlesrow1.map(function (article,k) {
+			
+			
+				return (
+					<Half article={article} style="normal"/>
+				);
+			
+		})}
+	</div>
+	<div class="grid grid-cols-1 sm:grid-cols-3  md:grid-flow-row  mt-4 gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		{articlesrow2.map(function (article,k) {
+			
+			return (
+
+					<Third article={article} style="normal" isslider="false" showdescription="false"/>
+					
+				);
+			
+		})}
+	</div>
+	<div class="hidden sm:grid grid-cols-2 md:grid-cols-4 md:grid-flow-col mt-4  gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		{articlesrow3.map(function (article,k) {
+			
+
+			return (
+				<Quarter article={article} style="big" showdescription={false} />
+					
+				);
+			
+		})}
+	</div>
+
+			
+			
+		
+		
+</section>

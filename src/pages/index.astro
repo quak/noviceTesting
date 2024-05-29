@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+
+import { getPageBySlugAlt } from '../lib/api';
+
+import Category1 from '../components/page/Category1.astro';
+import Category2 from '../components/page/Category2.astro';
+import Homemain from '../components/page/Homemain.astro';
+import Weeklyfa from '../components/page/Weeklyfa.astro';
+import Gallery from '../components/page/Gallery.astro';
+import Video from '../components/page/Video.astro';
+import Insta from '../components/page/Insta.astro';
+import People from '../components/page/People.astro';
+import Opinions from '../components/page/Opinions.astro';
+import Contact from '../components/page/Contact.astro';
+import Oglas from '../components/page/Oglas.astro';
+import Lastnews from '../components/page/Lastnews.astro';
+
+import * as use from '../components/index.js';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=10800');
+
+const page = await getPageBySlugAlt("home");
+
+const blocks = page.blocks;
+---
+
+
+
+<BaseLayout title="Novice Home - ">
+	
+	{
+    blocks?.map((block,k) => <use.switch name={block.name}>
+		<use.case slot={null}>Return:null</use.case>
+		<use.case slot={undefined}>Return:Undefined</use.case>
+		<use.case slot={'acf/homemain'}><Homemain block={block}/></use.case>
+		<use.case slot={'acf/people'}><People block={block}/></use.case>
+		<use.case slot={'acf/cat1'}><Category1 block={block}/></use.case>
+		<use.case slot={'acf/lastnews'}><Lastnews block={block}/></use.case>
+		
+		<use.case slot={'acf/cat2'}><Category2 block={block}/></use.case>
+		<use.case slot={'acf/weeklyfa'}><Weeklyfa block={block}/></use.case>
+		<use.case slot={'acf/gallery'}><Gallery block={block}/></use.case>
+		<use.case slot={'acf/video'}><Video block={block}/></use.case>
+    <use.case slot={'sbi/sbi-feed-block'}><Insta block={block}/></use.case>
+		<use.case slot={'acf/opinions'}><Opinions block={block}/></use.case>
+		<use.case slot={'acf/contact'}><Contact block={block}/></use.case>
+		<use.case slot={'acf/oglas'}><Oglas block={block}/></use.case>
+
+		<use.default>
+      
+		</use.default>
+	  </use.switch>)
+  }
+
+</BaseLayout>
+
+
+<script>
+  import GLightbox from 'glightbox';
+  const lightbox = GLightbox({
+      touchNavigation: true,
+      loop: true,
+      autoplayVideos: true
+  });
+  
+</script>

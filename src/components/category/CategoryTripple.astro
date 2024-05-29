@@ -1,0 +1,44 @@
+---
+import { getPostByCategoryBySlug } from '../../lib/api';
+import Third from '../page/elements/third.astro';
+import { Debug } from 'astro:components';
+
+const {block,articles,counter} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+const blockarticles = articles.slice(counter-3, counter);
+---
+
+
+
+<section class=" px-1 md:px-4 py-12  ">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width grid grid-cols-2 md:grid-cols-3 grid-rows-2 md:grid-rows-1 gap-4">
+		{blockarticles.map(function (article,k) {
+		
+			let url = '/'+article?.node?.categories?.nodes[0].slug+'/'+article?.node?.slug;
+			let d = new Date(article?.node?.date);
+			let datestring = d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear();
+
+			let avtor ="";
+			
+			if(article?.node?.author?.node?.firstName!=null){
+				avtor = ""+article?.node?.author?.node?.firstName ;
+			}
+			if(article?.node?.author?.node?.lastName!=null){
+				avtor = avtor+" "+article?.node?.author?.node?.lastName ;
+			}
+			
+			if(avtor == ""){
+				avtor="novice";
+			}
+			
+			
+				return (
+					<Third article={article} isslider={false} showdescription={true} style="normal"/>
+				);
+			
+		})}
+			
+		
+	</div>
+</section>

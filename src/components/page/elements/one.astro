@@ -1,0 +1,146 @@
+---
+
+const {article, style, shouldll} = Astro.props;
+import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
+import bookmarkicon from "../../../images/bookmark.svg";
+import usericon from "../../../images/user.svg";
+
+let url = '/'+article?.node?.categories?.nodes[0].slug+'/'+article?.node?.slug;
+let d = new Date(article?.node?.date);
+let datestring = d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear();
+
+/********* */
+let avtor ="";
+
+if(article?.node?.author?.node?.firstName!=null){
+    avtor = ""+article?.node?.author?.node?.firstName ;
+}
+if(article?.node?.author?.node?.lastName!=null){
+    avtor = avtor+" "+article?.node?.author?.node?.lastName ;
+}
+
+if(avtor == ""){
+    avtor="novice";
+}
+/********* */
+
+var llstyle = "lazy";
+if(shouldll==="false"){
+    llstyle = "eager";
+}
+
+let place = article?.node?.place?.place;
+let placeclass = "";
+if(place === null || place.trim()===0){
+    placeclass = "hidden";
+}
+
+let excerpt = (article?.node?.excerpt).replace(/<[^>]*>?/gm, '');
+excerpt = excerpt.replace("[&hellip;]", '...');
+---
+
+{ 
+    ()=> {
+      if (style === "" || style === "fullteaser") {
+        return(
+
+            <a href={url} class="col-span-2 sm:col-span-4 md:col-span-2 md:row-span-2  md:h-full  overflow-hidden" >
+                <article class="p-2 bg-sneg-white h-full relative flex flex-col">
+
+                    <div class="overflow-hidden relative">
+                        <Picture width="1124" height="632" class="ease-out duration-4000 transition-all hover:scale-103 aspect-video" src={article?.node?.featuredImage?.node?.sourceUrl} srcset={article?.node?.featuredImage?.node?.srcSet} alt={article?.node?.title}  loading={llstyle}/>
+
+                        <div class="absolute left-0 bottom-0 block">
+                            <span class={`block uppercase px-2 bg-klopinj-blue text-white text-xl tracking-widels ${placeclass}`}>{place}</span>
+                        </div>
+                    </div>
+
+
+                    <div class="px-4 pt-2 flex flex-col flex-1">
+                        
+                        <h2 class="  leading-novice text-2xl sm:text-5xl font-bold line-clamp-3 text-ellipsis mt-4 "><Fragment set:html={article?.node?.title}/></h2>
+
+                        <div class="flex-1 mt-2">
+                            <div class=" text-base md:text-xl font-serif line-clamp-3 text-ellipsis">{excerpt}</div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row justify-end sm:justify-between flex-1 gap-1 sm:gap-4 mt-2 hidden">
+                            <span class="uppercase flex flex-row items-center text-klopinj-blue tracking-widels text-xs sm:text-md">
+                                <Image src={bookmarkicon} loading={llstyle} alt="Date icon" class=""/>
+                                {datestring}
+                            </span>
+
+                            <span class="uppercase flex flex-row items-center text-klopinj-blue tracking-widels text-xs sm:text-md">
+                                <Image class=" max-h-4 mr-2" src={usericon} alt="Avtor icon" loading={llstyle}/>
+                                {avtor}
+                            </span>
+                        </div>
+                    </div>
+                    
+                </article>
+            </a>
+
+        )
+      } else if( style === "wide") {
+        return(
+            <a href={url} class="flex flex-col sm:flex-row  overflow-hidden">
+                <div class="basis-full sm:basis-2/3">
+                    <img class="ease-out duration-4000 transition-all hover:scale-101"   src={article?.node?.featuredImage?.node?.sourceUrl} srcset={article?.node?.featuredImage?.node?.srcSet}  loading={llstyle} alt={article?.node?.title}/>
+                </div>
+                <div class="px-6 basis-1/3 flex flex-wrap flex-col justify-between">
+                    <div class="flex flex-wrap gap-2 my-4 sm:my-0">
+                        
+                        <span class={`uppercase px-2 bg-klopinj-blue text-white text-xl tracking-widels ${placeclass}`}>{place}</span>
+                        
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold line-clamp-4 leading-novice"><Fragment set:html={article?.node?.title}/></h2>
+                    
+                    <div class="text-lg md:text-2xl font-serif my-4 sm:my-0 line-clamp-3">{excerpt}</div>
+                    <div class="flex gap-1 justify-between hidden">
+                        <span class="uppercase flex flex-row items-center tracking-widels"><img  src="/tmpimages/svgs/bookmark.svg" alt="Date icon"/>{datestring}</span>
+                        <span class="uppercase flex flex-row items-center tracking-widels"><img class="max-h-4 mr-1"src="/tmpimages/svgs/user.svg" alt="Avtor icon"/>{avtor}</span>
+                    </div>
+                </div>
+            </a>
+        )
+      } else if( style === "peopleteaser") {
+
+
+            let personname =" ";
+			
+            if(article?.node?.oseba?.name!=null){
+                personname = ""+article?.node?.oseba?.name ;
+            }
+            if(article?.node?.oseba?.surname!=null){
+                personname = personname+" "+article?.node?.oseba?.surname ;
+            }
+
+        return(
+
+
+            <a href={url} class=" overflow-hidden">
+                <div class="flex gap-4">
+                    
+                    <div class="basis-full md:basis-2/5 flex flex-wrap flex-col justify-between">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="uppercase px-2 bg-klopinj-blue text-white text-xl tracking-widels">{place}</span>
+                        </div>
+                        <span>
+                            <h2 class="text-papez-purple uppercase text-5xl mb-4 font-bold tracking-widerls leading-novice">{personname}</h2>
+                            
+                            <p class="text-2xl sm:text-5xl font-serif line-clamp-3 leading-novice"><Fragment set:html={article?.node?.title}/></p>
+                            <p class="text-lg font-serif mt-12 mb-12">{excerpt}</p>
+                        </span>
+                        
+                    </div>
+                    <div class="md:basis-3/5">
+                        <Picture width="1124" height="632" class="ease-out duration-4000 transition-all hover:scale-103 aspect-video" src={article?.node?.featuredImage?.node?.sourceUrl} srcset={article?.node?.featuredImage?.node?.srcSet} alt={article?.node?.title}  loading={llstyle}/>
+                    </div>
+                </div>
+                
+            </a>
+        )
+      } 
+    }
+  }

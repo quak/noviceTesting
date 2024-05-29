@@ -1,0 +1,152 @@
+---
+import { fade } from 'astro:transitions';
+const {article, style, isslider, showdescription, shouldll,key} = Astro.props;
+import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
+
+import bookmarkicon from "../../../images/bookmark.svg";
+import usericon from "../../../images/user.svg";
+
+var sliderclass = "";
+if(isslider==true){
+    sliderclass = "swiper-slide";
+}
+
+var descriptionclass = "";
+if(showdescription==true){
+    descriptionclass = "sm:block";
+}
+
+
+var llstyle = "lazy";
+if(shouldll==="false"){
+    llstyle = "eager";
+}
+
+let url = '/'+article?.node?.categories?.nodes[0].slug+'/'+article?.node?.slug;
+let d = new Date(article?.node?.date);
+let datestring = d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear();
+
+let avtor ="";
+
+if(article?.node?.author?.node?.firstName!=null){
+    avtor = ""+article?.node?.author?.node?.firstName ;
+}
+if(article?.node?.author?.node?.lastName!=null){
+    avtor = avtor+" "+article?.node?.author?.node?.lastName ;
+}
+
+if(avtor == ""){
+    avtor="novice";
+}
+
+let place = article?.node?.place?.place;
+let placeclass = "";
+if(place === null || place.trim()===0){
+    placeclass = "hidden";
+}
+
+let excerpt = (article?.node?.excerpt).replace(/<[^>]*>?/gm, '');
+
+let personname =" ";
+			
+if(article?.node?.oseba?.name!=null){
+    personname = ""+article?.node?.oseba?.name ;
+}
+if(article?.node?.oseba?.surname!=null){
+    personname = personname+" "+article?.node?.oseba?.surname ;
+}
+---
+
+{ 
+    ()=> {
+      if (style === "" || style === "normal") {
+        return(
+
+            <a href={url} class={`col-span-1 md:col-span-1 md:row-span-1  overflow-hidden ${sliderclass}`} >
+                <article class="p-2 bg-sneg-white h-full flex flex-col">
+                    <div class="overflow-hidden relative ">
+                        <Picture height="198" width="353" class="ease-out duration-4000 transition-all hover:scale-103 aspect-video"  src={article?.node?.featuredImage?.node?.sourceUrl} srcset={article?.node?.featuredImage?.node?.srcSet} loading={llstyle} alt={article?.node?.title} />
+                        <div class="absolute left-0 bottom-0 block">
+                            <span class={`block uppercase px-2 bg-klopinj-blue text-white tracking-widels text-sm ${placeclass}`}>{place}</span>
+                        </div>
+                    </div>
+                    <div class="sm:px-3 pt-2 flex flex-col flex-1 justify-between">
+                        
+                        <h2 class=" text-xl sm:text-3xl line-clamp-3 text-ellipsis font-bold leading-novice"><Fragment set:html={article?.node?.title}/></h2>	
+                        <span class={`hidden ${descriptionclass}`}>
+                            <p class="text-base font-serif mb-4 line-clamp-3">{excerpt}</p>
+                        </span> 
+                        <div class="flex flex-col sm:flex-row justify-end sm:justify-between flex-1 gap-1 sm:gap-4 mt-2 hidden">
+                            <span class="uppercase flex flex-row items-center text-klopinj-blue tracking-widels text-xs sm:text-md">
+                                
+                                <Image src={bookmarkicon} loading={llstyle} alt="Date icon" class=""/>
+                                
+                                {datestring}
+                            </span>
+
+                            <span class="uppercase flex flex-row items-center text-klopinj-blue tracking-widels text-xs sm:text-md">
+                                
+                                <Image class=" max-h-4 mr-2" src={usericon} alt="Avtor icon" loading={llstyle}/>
+                                {avtor}
+                            </span>
+                        </div>
+                    </div>
+                
+                </article>
+            </a>
+
+
+        )
+      } else if( style === "opinion") {
+        let avatarsrc = "";
+     
+        if(typeof article?.node?.mnenje?.avatar?.mediaItemUrl == 'undefined' ){
+            avatarsrc="/tmpimages/svgs/person.svg";
+        }else{
+            avatarsrc=article?.node?.mnenje?.avatar?.mediaItemUrl;
+        }
+
+        return(
+            <a href={url} class="row-start-2 md:row-start-1  basis-1/2 md:basis-1/3 flex flex-col justify-between  overflow-hidden block">
+                <div class="flex-none relative flex justify-center z-10 relative">
+                    <Picture height="181" width="144" class="mx-auto z-10 -mb-4 max-h-36 relative"  src={avatarsrc} loading={llstyle} alt={article?.node?.title} />
+                    <div class="mx-auto absolute w-32 h-32 border border-black bg-white rounded-full top-8"></div>
+                </div>
+                <div class="flex-auto border-b-8 border-t-8 border-iskanje-grey z-20 relative bg-white text-center ">
+                    <span class="px-4 block">
+                        <span class="uppercase text-klopinj-blue text-center text-4xl font-light mt-4 block leading-novice">{personname}</span>
+                        <h2 class="text-xl sm:text-2xl mb-2 text-ellipsis mt-2 line-clamp-4 sm:line-clamp-3 leading-novice"><Fragment set:html={article.node.title}/></h2>
+                        <p class="hidden sm:block font-serif text-center mt-8 mb-8 text-xl italic line-clamp-3">{excerpt}</p>
+                    </span>
+                </div>
+            </a>
+        )
+      } else if( style === "condolations") {
+        return(
+            <a href={url} class="col-span-1 h-full  overflow-hidden swiper-slide" >
+                <article class="p-3 bg-sneg-white flex flex-row gap-4 h-full">
+                
+                    <div class=" overflow-hidden md:basis-1/2 relative block">
+                        <div class="absolute top-0 right-0 block z-30">
+                            <span class={`block uppercase px-2 bg-klopinj-blue text-white tracking-widels text-sm ${placeclass}`}>{place}</span>
+                        </div>
+                        <Picture height="164" width="292" class="max-h-52 sm:max-h-fit sm:max-h ease-out duration-4000 transition-all hover:scale-103 sepia"  src={article?.node?.featuredImage?.node?.sourceUrl} srcset={article?.node?.featuredImage?.node?.srcSet} loading={llstyle} alt={article?.node?.title}/>
+                    </div>
+        
+                    <div class="flex flex-col md:basis-1/2 justify-between">
+
+                        <span class="block">
+                            <span class="text-black text-2xl">{article?.node?.oseba?.dateinfo}</span>
+                        </span>
+                        <span class="text-papez-purple text-3xl leading-novice block">{personname}</span>
+                        
+                        
+                        <h2 class="text-xl sm:text-2xl sm:text-2xl  mt-4 leading-novice line-clamp-5">{article.node.title}</h2>
+                    </div>
+                
+                </article>
+            </a>
+        )
+      }
+    }

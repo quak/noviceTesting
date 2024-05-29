@@ -1,0 +1,12 @@
+.swiper-slide{
+    height: auto!important;
+}
+
+.eventSwiper .swiper-pagination{
+    margin-top: 2rem;
+    position: relative;
+}
+
+.eventSwiper .swiper-pagination .swiper-pagination-bullet-active{
+    background: white!important;
+}

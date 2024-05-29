@@ -1,0 +1,163 @@
+---
+import { getPostByCategoryBySlug,getPageBySlugAlt } from '../../lib/api';
+
+import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import * as use from '../../components/index.js';
+import Switch from '../../components/Switch.astro';
+import QuadReload from '../../components/react/QuadReload'; 
+
+
+
+import Categoryheader from '../../components/category/Categoryheader.astro';
+import CategoryTeaser from '../../components/category/CategoryTeaser.astro';
+import CategoryDouble from '../../components/category/CategoryDouble.astro';
+import CategoryQuad from '../../components/category/CategoryQuad.astro';
+import CategoryTripple from '../../components/category/CategoryTripple.astro';
+import CategoryTeam from '../../components/category/CategoryTeam.astro';
+import CategoryPeopleTeaser from '../../components/category/CategoryPeopleTeaser.astro';
+import CategoryPeopleOpinion from '../../components/category/CategoryPeopleOpinion.astro';
+import CategoryCongratulations from '../../components/category/CategoryCongratulations.astro';
+import CategoryCondolations from '../../components/category/CategoryCondolations.astro';
+import CategoryChildren from '../../components/category/CategoryChildren.astro';
+import CategoryInsta from '../../components/category/CategoryInsta.astro';
+import Contact from '../../components/page/Contact.astro';
+import Orderform from '../../components/page/Orderform.astro';
+import { Debug } from 'astro:components';
+
+
+Astro.response.headers.set('Cache-Control', 's-maxage=10800')
+
+
+
+const { catname } = Astro.params;
+
+const page = await getPageBySlugAlt(catname);
+
+const blocks = page?.blocks;//page.blocks;
+
+
+let articles = await getPostByCategoryBySlug(catname,20);
+
+
+
+//let articles = new Array();
+//await getPostByCategoryBySlug(dat acatid,20);
+let i = 30;
+let countera = 0;
+let categoryname = catname;
+
+---
+
+
+
+<BaseLayout title="Novice SubCatx">
+	
+	{
+		
+    blocks?.map((block,i) => 
+		{
+			switch (block.name) {
+				case 'acf/header': {
+					
+					return (
+						<Categoryheader block={block} articles={articles}/>
+					);
+				}
+				case 'acf/teaser': {
+					countera=countera+1;
+					return (
+						<CategoryTeaser block={block} articles={articles} counter={countera}></CategoryTeaser>
+					);
+				}
+
+				case 'acf/double': {
+					countera=countera+2;
+					return (
+						<CategoryDouble block={block} articles={articles} counter={countera}/>
+					);
+				}
+
+				case 'acf/tripple': {
+					countera=countera+3;
+					return (
+						<CategoryTripple block={block} articles={articles} counter={countera}/>
+					);
+				}
+
+
+				case 'acf/quad': {
+					countera=countera+4;
+					return (
+						<CategoryQuad block={block} articles={articles} counter={countera}/>
+					);
+				}
+
+
+				case 'acf/team': {
+					return (
+						<CategoryTeam block={block}/>
+					);
+				}
+
+				case 'acf/people-teaser': {
+					return (
+						<CategoryPeopleTeaser block={block}/>
+					);
+				}
+
+				case 'acf/people-opinions': {
+					return (
+						<CategoryPeopleOpinion block={block}/>
+					);
+				}
+
+				case 'acf/people-congratulations': {
+					return (
+						<CategoryCongratulations block={block}/>
+					);
+				}
+
+				case 'acf/people-condolations': {
+					return (
+						<CategoryCondolations block={block}/>
+					);
+				}
+
+
+				case 'acf/children': {
+					return (
+						<CategoryChildren block={block}/>
+					);
+				}
+
+				case 'sbi/sbi-feed-block': {
+					return (
+						<CategoryInsta block={block}/>
+					);
+				}
+
+				case 'acf/contact': {
+					return (
+						<Contact block={block}/>
+					);
+				}
+
+				case 'acf/orderform': {
+					return (
+						<Orderform block={block}/>
+					);
+				}
+
+				default: {
+					return (
+						'-'+block.name+'-'
+					);
+				}
+			}
+		})
+  }
+
+   <QuadReload client:load countera={countera} catname={categoryname}/>
+
+</BaseLayout>

@@ -1,0 +1,108 @@
+---
+import { fade } from 'astro:transitions';
+const {article, style, isslider, showdescription, shouldll,key} = Astro.props;
+import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
+
+import bookmarkicon from "../../../images/bookmark.svg";
+import usericon from "../../../images/user.svg";
+
+var sliderclass = "";
+if(isslider==true){
+    sliderclass = "swiper-slide";
+}
+
+var descriptionclass = "";
+if(showdescription==true){
+    descriptionclass = "sm:block";
+}
+
+
+var llstyle = "lazy";
+if(shouldll==="false"){
+    llstyle = "eager";
+}
+
+let url = '/'+article?.cat?.category_nicename+'/'+article?.post_name;
+let d = new Date(article?.post_modified);
+let datestring = d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear();
+
+let avtor = article.author;
+
+
+if(avtor == ""){
+    avtor="novice";
+}
+
+let place = ""
+let placeat = ""
+
+place = article?.loc?.slovensko_ime;
+placeat = article?.loc?.nemsko_ime;
+
+let placeclass = "";
+if(place === null || place===""){
+    placeclass = "hidden";
+}
+
+
+
+let excerpt = ""
+if(article?.excerpt!=""){
+    excerpt = (article?.excerpt).replace(/<[^>]*>?/gm, '');
+}
+
+let imgsrc="";
+if(article?.thumb===false){
+    imgsrc = 'https://sfsn.si/wp-content/uploads/2023/10/hokej-14-256x128.png';
+}else{
+    imgsrc = article?.thumb;
+}
+
+
+---
+
+{ 
+    ()=> {
+      if (style === "" || style === "normal") {
+        return(
+
+            <a href={url} class={`col-span-1 md:col-span-1 md:row-span-1  overflow-hidden ${sliderclass}`} >
+                <article class="p-2 bg-sneg-white h-full flex flex-col">
+                    <div class="overflow-hidden relative ">
+                        
+                        <Picture height="198" width="353" class="ease-out duration-4000 transition-all hover:scale-103 aspect-video"  src={imgsrc} loading={llstyle} alt={article?.post_title} />
+                        <div class="absolute left-0 bottom-0 block ">
+                            <span class={`block uppercase px-2 bg-klopinj-blue text-white tracking-widels text-sm absolute left-0 bottom-0 text-nowrap ease-out duration-300 transition-all opacity-100 hover:opacity-0 z-10 ${placeclass}`}>{place}</span>
+                            <span class={`block uppercase px-2 bg-klopinj-blue text-white tracking-widels text-sm absolute left-0 bottom-0 text-nowrap ${placeclass}`}>{placeat}</span>
+                        </div>
+                    </div>
+                    <div class="sm:px-3 pt-2 flex flex-col flex-1 justify-between">
+                        
+                        <h2 class="text-xl sm:text-3xl line-clamp-3 text-ellipsis font-bold leading-novice"><Fragment set:html={article?.post_title}/></h2>	
+                        <span class={`hidden ${descriptionclass}`}>
+                            <p class="text-base font-serif mb-4 line-clamp-3">{excerpt}</p>
+                        </span>
+                        <div class="flex flex-col sm:flex-row justify-end sm:justify-between flex-1 gap-1 sm:gap-4 mt-2 hidden">
+                            <span class="uppercase flex flex-row items-center text-klopinj-blue tracking-widels text-xs sm:text-md">
+                                
+                                <Image src={bookmarkicon} loading={llstyle} alt="Date icon" class=""/>
+                                
+                                {datestring}
+                            </span>
+
+                            <span class="uppercase flex flex-row items-center text-klopinj-blue tracking-widels text-xs sm:text-md">
+                                
+                                <Image class=" max-h-4 mr-2" src={usericon} alt="Avtor icon" loading={llstyle}/>
+                                {avtor}
+                            </span>
+                        </div>
+                    </div>
+                
+                </article>
+            </a>
+
+
+        )
+      } 
+    }

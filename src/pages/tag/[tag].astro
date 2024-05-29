@@ -1,0 +1,43 @@
+---
+import { getArticlesWithTag } from '../../lib/tags';
+
+import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticlesForTag from '../../components/react/ArticlesForTag'; 
+
+
+Astro.response.headers.set('Cache-Control', 's-maxage=10800')
+
+const { tag } = Astro.params;
+
+
+
+---
+
+
+<BaseLayout pageTitle="Projektorisch">
+  
+    <section class="bg-kosuta-grey px-1 md:px-4 pt-12 overflow-hidden">
+        <div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+            <div class="flex flex-col w-full">
+                <div>
+                    <h1 class="text-center uppercase text-4xl text-klopinj-blue font-light md:text-6xl lg:text-8xl">Tag: {tag}</h1>
+                </div>
+                
+            
+            </div>
+        </div>
+        
+    </section>
+  <section class="px-1 md:px-4 md:pt-12 pb-24">
+      <div class=" mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+        
+       
+            <ArticlesForTag tag={tag} client:load />
+        
+      </div>
+  </section>
+
+
+</BaseLayout>
+

@@ -1,0 +1,151 @@
+---
+import { getAllSlugsOfPosts,getArticleBySlug } from '../../lib/api';
+
+import Breadcrumb from '../../components/article/Breadcrumb.astro';
+import Articleheader from '../../components/article/Articleheader/Articleheader.astro';
+import Articleheadergallery from '../../components/article/Articleheader/Articleheadergallery.astro';
+import Articlefooter from '../../components/article/Articlefooter.astro';
+
+import Paragraph from '../../components/article/Paragraph.astro';
+import Heading from '../../components/article/Heading.astro';
+import Image from '../../components/article/Image.astro';
+import Gallery from '../../components/article/Gallery.astro';
+import Quote from '../../components/article/Quote.astro';
+
+import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+import * as use from '../../components/index.js';
+import Switch from '../../components/Switch.astro';
+
+
+import { getArticleBySlugAPI } from '../../lib/article';
+//import Counter from '../../components/react/Counter.jsx';
+
+
+import {GLightbox} from 'glightbox';
+
+Astro.response.headers.set('Cache-Control', 's-maxage=10800')
+
+/*
+export async function getStaticPaths() {
+  const articles = await getAllSlugsOfPosts();
+  return await articles.edges.map(node => {
+    return {
+      params: {category: node?.node?.categories.nodes[0].slug, article: node?.node?.slug},
+      
+    };
+  });
+}
+*/
+
+const { category,article } = Astro.params;
+
+const arti = await getArticleBySlug(article);
+//const post = await getArticleBySlugAPI(article);
+
+var blocks = null;
+if(arti){
+   blocks = arti.blocks;
+}
+
+
+
+let isGallery = false;
+if(category=="gallery"){
+  isGallery = true;
+}
+
+/********** */
+let cats = arti.categories.nodes;
+
+cats.forEach(cat => {
+    if(cat.slug=="galerije"){
+      isGallery = true;
+    }
+});
+/********** */
+
+let firstname = arti?.author?.node?.firstName;
+let lastname = arti?.author?.node?.lastName;
+let nicename = arti?.author?.node?.slug;
+
+if(firstname==undefined){
+  firstname = "";
+}
+if(lastname==undefined){
+  lastname = "Novice";
+}
+
+if(nicename==undefined){
+  nicename = "Novice";
+}
+
+const avtor = firstname+" "+lastname;
+
+let leading = arti?.excerpt;
+if(arti?.leadingForAllPosts?.leading!==null){
+  leading = arti?.leadingForAllPosts?.leading;
+}
+            
+//const featuredImage = (arti.featuredImage.node.mediaItemUrl).replace("https://sfsn.si","" );
+let place = article?.loc;
+
+let placeclass = "";
+if(place === null || place===""){
+    placeclass = "hidden";
+}
+---
+
+
+
+
+<BaseLayout pageTitle="Projektorisch">
+  
+  
+  <section class="px-1 md:px-4 md:pt-12 pb-24">
+      <div class=" mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+    
+
+        <Breadcrumb category={category}/>
+
+        {
+          !isGallery && (<Articleheader id={arti?.id} title={arti?.title} excerpt={leading} date="23. Avg 2023" author={avtor} avtorslug={nicename} place={place} mediaItem={arti?.featuredImage}/>)
+        }
+        {
+         
+          isGallery &&(<Articleheadergallery id={arti?.id} title={arti?.title} excerpt={leading} date="23. Avg 2023" author={avtor} avtorslug={nicename} place={place} mediaItem={arti?.featuredImage}/>)
+        }
+        
+        
+        {blocks?.map((block,k) => <use.switch name={block.name}>
+          <use.case slot={null}>Return:null</use.case>
+          <use.case slot={undefined}>Return:Undefined</use.case>
+          <use.case slot={'core/paragraph'}><Paragraph block={block}/></use.case>
+          <use.case slot={'core/heading'}><Heading block={block}/></use.case>
+          <use.case slot={'acf/image'}><Image block={block}/></use.case>
+          <use.case slot={'acf/images'}><Gallery block={block} index={k}/></use.case>
+          <use.case slot={'acf/quote'}><Quote block={block}/></use.case>
+          <use.default>
+            <h1>Hello default! -------------- {block.name}</h1>
+          </use.default>
+        </use.switch>)}
+
+        <Articlefooter category={category}/>
+      </div>
+  </section>
+
+
+</BaseLayout>
+
+
+<script>
+import GLightbox from 'glightbox';
+const lightbox = GLightbox({
+    touchNavigation: true,
+    loop: true,
+    autoplayVideos: true
+});
+
+
+</script>

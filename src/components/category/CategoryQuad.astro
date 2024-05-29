@@ -1,0 +1,24 @@
+---
+import { getPostByCategoryBySlug } from '../../lib/api';
+import { Debug } from 'astro:components';
+import Quarter from '../page/elements/quarter.astro'
+
+const {block,articles,counter} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+const blockarticles = articles.slice(counter-4, counter);
+---
+
+
+<section class=" px-1 md:px-4 py-4 overflow-hidden ">
+	
+	<div class="grid grid-cols-2 md:grid-cols-4 md:grid-rows-1 md:grid-flow-row  gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		{blockarticles.map(function (article,k) {
+				return (
+					<Quarter article={article} style="big" isslider={false} bg={false} showdescription={true}/>
+				);
+			
+		})}
+				
+	</div>
+</section>

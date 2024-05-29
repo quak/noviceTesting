@@ -1,0 +1,28 @@
+---
+import { array } from 'astro/zod';
+import { getPostByCategoryById } from '../../lib/api';
+import One from '../page/elements/one.astro'
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+let person = await getPostByCategoryById(["1641"],1);
+if(person === undefined){
+	person = new Array();
+}
+---
+
+
+<section class=" px-1 md:px-4 py-12  ">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		{person.map(function (article) {
+				
+			return (
+				<One article={article} style="peopleteaser"/>
+			);
+
+		})}
+		
+	</div>
+</section>

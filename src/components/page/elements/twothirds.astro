@@ -1,0 +1,80 @@
+---
+import { fade } from 'astro:transitions';
+const {article, shouldll} = Astro.props;
+import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
+import bookmarkicon from "../../../images/bookmark.svg";
+import usericon from "../../../images/user.svg";
+
+
+let url = '/'+article?.node?.categories?.nodes[0].slug+'/'+article?.node?.slug;
+let d = new Date(article?.node?.date);
+let datestring = d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear();
+
+let avtor ="";
+
+if(article?.node?.author?.node?.firstName!=null){
+    avtor = ""+article?.node?.author?.node?.firstName ;
+}
+if(article?.node?.author?.node?.lastName!=null){
+    avtor = avtor+" "+article?.node?.author?.node?.lastName ;
+}
+
+if(avtor == ""){
+    avtor="novice";
+}
+
+let place = article?.node?.place?.place;
+let placeclass = "";
+if(place === null || place.trim()===0){
+    placeclass = "hidden";
+}
+
+
+var llstyle = "lazy";
+if(shouldll==="false"){
+    llstyle = "eager";
+}
+
+var title = article?.node?.title;
+var textsize = "text-2xl md:text-5xl"
+if(title.length<55){
+    textsize = "text-2xl md:text-6xl"
+}
+
+---
+
+<div class="col-span-2">
+    <a href={url} rel="prefetch" class=" overflow-hidden">
+        <article class="relative">
+            <div class="overflow-hidden relative ">
+                <Picture width="754" height="424" class="ease-out duration-4000 transition-all hover:scale-103"   src={article?.node?.featuredImage?.node?.sourceUrl} srcset={article?.node?.featuredImage?.node?.srcSet} loading={llstyle} alt={article?.node?.title}/>
+                
+            </div>
+            <span class={`bg-klopinj-blue  uppercase  absolute top-0  block uppercase px-2 bg-klopinj-blue text-white tracking-widels text-sm  ${placeclass}`}>{place}</span>
+            <div class="absolute p-4 md:px-12 md:py-4 bottom-0">
+
+                <span class="z-20 relative">
+                    
+                    <h2 class={`text-sele-ivory  line-clamp-3 text-ellipsis leading-novice font-bold z-10  ${textsize}`} ><Fragment set:html={article?.node?.title}/></h2>
+                </span>
+
+                <div class="flex gap-1 justify-center mb-2 z-20 relative hidden">
+                    <span class="uppercase flex flex-row items-center text-white px-2  tracking-widels">
+                        
+                        <Image class="svggowhite"  src={bookmarkicon} loading={llstyle} alt="Date icon"/>
+                        {datestring}
+                    </span>
+
+                    <span class="uppercase flex flex-row items-center text-white px-2 tracking-widels">
+                        
+                        <Image class=" svggowhite max-h-4 mr-1" src={usericon} alt="Avtor icon" loading={llstyle}/>
+                        {avtor}
+                    </span>
+                </div>
+                
+            </div>	
+            <div class="z-10" style="position: absolute; bottom:0;left:0; width:100%;height:50%;background:linear-gradient(to top, rgba(0,0,0,0.85) 50%, transparent);"></div>
+        </article>
+    </a>
+</div>

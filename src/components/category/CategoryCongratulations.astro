@@ -1,0 +1,97 @@
+---
+import { getPostByCategoryBySlug } from '../../lib/api';
+import { Debug } from 'astro:components';
+import { getPostByCategoryById } from '../../lib/api';
+import Quarter from '../page/elements/quarter.astro'
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+let num_of_slider_elements_congrats = blckjsn?.data?.num_of_slider_elements_congrats;
+if (num_of_slider_elements_congrats === undefined){
+	num_of_slider_elements_congrats = '8';
+}
+
+let congratulations = await getPostByCategoryById(["1442"],parseInt(num_of_slider_elements_congrats));
+if(congratulations === undefined){
+	congratulations = new Array();
+}
+
+---
+
+
+
+<section class="bg-sele-ivory px-1 md:px-4 py-24 overflow-hidden">
+	
+	
+	<div class="flex-col sm:flex-row gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width mb-8 flex justify-between items-center" >
+		
+		<div>
+			<h2 class="text-center uppercase text-4xl text-klopinj-blue font-light text-5xl sm:text-8xl flex justify-center"> <img src="/tmpimages/svgs/cestitke.svg"/>Čestitamo</h2>
+		</div>
+		<div >
+			<a href="/kategorije/kontakt/" class="flex gap-2">
+				<p class="max-w-24 font-serif text-xs">
+					Bi vi radi komu čestitali. Tukaj najdete formular. 
+				</p>
+				<img  src="/tmpimages/svgs/sendwish.svg"/>
+			</a>
+		</div>
+	</div>
+
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width swiper overflow-hidden relative">
+		<div class="swiper-wrapper">
+
+			{congratulations.map(function (article,k) {
+				
+					return (
+						<Quarter article={article} style="congratulations2" isslider={true} bg={true}/>
+					);
+
+			})}
+						
+			
+			
+		</div>
+		<div class="swiper-button-prev"></div>
+		<div class="swiper-button-next"></div>
+	</div>
+</section>
+
+<script>
+	import Swiper from 'swiper';
+	import { Navigation, Pagination } from 'swiper/modules';
+	
+	// import styles bundle
+	import 'swiper/css';
+	import 'swiper/css/navigation';
+	import 'swiper/css/pagination';
+  document.addEventListener('astro:page-load', () => {
+// init Swiper:
+const swiper = new Swiper('.swiper', {
+  // Optional parameters
+  modules: [Navigation, Pagination],
+  direction: 'horizontal',
+  loop: true,
+  slidesPerView: 1,
+  spaceBetween: 16,
+
+  // Navigation arrows
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+
+  breakpoints: {
+    480: {
+      slidesPerView: 2,
+    },
+    768: {
+      slidesPerView: 4,
+    }
+  }
+
+});
+});
+  </script>

@@ -1,0 +1,54 @@
+---
+import { getPostByCategoryBySlug } from '../../lib/api';
+
+const {block} = Astro.props;
+
+---
+
+<section class="bg-sele-ivory px-1 md:px-4 py-24">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		
+		<h2 class="col-span-2 font-light text-5xl text-klopinj-blue mb-2 uppercase text-center">INSTA REELS</h2>
+		
+	</div>
+
+	<Fragment set:html={block.dynamicContent} />
+</section>
+
+<script>
+	import Swiper from 'swiper';
+	import 'swiper/css/bundle';
+	document.addEventListener('astro:page-load', () => {
+	// import Swiper bundle with all modules installed
+	
+	
+	// import styles bundle
+	
+	
+	// init Swiper:
+	const swiper = new Swiper('.swipervid', {
+	  // Optional parameters
+	  direction: 'horizontal',
+	  loop: true,
+	  slidesPerView: 1,
+	  spaceBetween: 16,
+	
+	  // Navigation arrows
+	  navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	  },
+	
+	  breakpoints: {
+		480: {
+		  slidesPerView: 2,
+		},
+		768: {
+		  slidesPerView: 4,
+		}
+	  }
+	
+	});
+});
+	
+	  </script>

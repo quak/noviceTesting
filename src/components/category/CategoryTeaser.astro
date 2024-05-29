@@ -1,0 +1,31 @@
+---
+import { getPostByCategoryBySlug } from '../../lib/api';
+import { Debug } from 'astro:components';
+import One from '../page/elements/one.astro'
+
+const {block,articles,counter} = Astro.props;
+
+
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+
+/* Filter following articles for this block*/
+const blockarticles = articles.slice(counter-1, counter);
+
+---
+
+
+<section class=" px-1 md:px-4 py-12 overflow-hidden ">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		{blockarticles.map(function (article,k) {
+			
+
+				return (
+					<One article={article} style="wide"/>
+				);
+			
+		})}
+		
+	</div>
+</section>

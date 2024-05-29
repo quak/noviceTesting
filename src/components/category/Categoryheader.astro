@@ -1,0 +1,71 @@
+---
+import { createAnimationScope } from 'astro:transitions';
+import { getImageForId } from '../../lib/image';
+import { Debug } from 'astro:components';
+
+const {block,articles} = Astro.props;
+const blckjsn = JSON.parse(block.attributesJSON);
+
+
+
+const imgurlarr = await getImageForId(blckjsn.data.categoryimage);
+let imgurl = "";
+if(imgurlarr.length !== 0){
+	imgurl = imgurlarr[0];
+}
+
+let cattags = new Array();
+articles.forEach ((article, index) => {
+	let tags = article?.node?.tags?.edges;
+	tags.forEach ((tag, index) => {
+	
+		
+		let ti = cattags.findIndex((item) => item.id === tag.node.id);
+		if (ti === -1) {
+			cattags.push(tag.node);
+		}
+		
+	});
+});
+
+const lefttags = cattags.slice(0, 4);
+const righttags = cattags.slice(4, 8);
+
+
+
+---
+
+
+<section class="bg-kosuta-grey px-1 md:px-4 py-12 overflow-hidden hyphens-auto">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		<div class="flex flex-col w-full">
+			<div class="flex items-center justify-center gap-2 sm:gap-8">
+				<img class="h-16 sm:h-32" src={imgurl}/>
+				<h1 class="text-center uppercase text-4xl text-klopinj-blue font-light md:text-6xl lg:text-8xl">{blckjsn.data.chtitle}</h1>
+			</div>
+			<div class="text-center">
+				<p class="uppercase tracking-widedate text-lg md:text-2xl my-4">{blckjsn.data.subtitle}</p>
+			</div>
+			<div class=" flex justify-center gap-4 ">
+				
+				<div class=" flex items-center ">
+					<div>
+						<div class="flex flex-wrap justify-end gap-8">
+							{lefttags.map(function (ltag,k) {
+								let url = '/tag/'+ltag?.slug;
+								
+								return (
+									<a href={url} class="uppercase bg-tag-grey text-xl px-4 rounded-xl leading-8 tracking-widerls">{ltag?.name}</a>
+								)								
+								
+							})}
+						
+						</div>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+	
+</section>

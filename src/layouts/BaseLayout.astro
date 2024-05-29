@@ -1,0 +1,146 @@
+---
+import { getMenus } from '../lib/api';
+import { ViewTransitions } from 'astro:transitions';
+
+import '../styles/swiper.css';
+import '../styles/glightbox.min.css';
+import '../styles/cookieconsent.css';
+
+import '../styles/menu.css';
+
+import Footer from '../components/page/Footer.astro';
+import Header from '../components/Header.astro';
+
+
+
+
+
+const menus = await getMenus();
+var menu_left = null;
+var menu_right = null;
+
+var menu_first_column = null;
+var menu_second_column = null;
+
+
+menus.forEach(element => {
+    if(element["name"]=="menu_left"){
+        menu_left = element;
+    }
+    if(element["name"]=="menu_right"){
+        menu_right = element;
+    }
+    if(element["name"]=="menu_first_column"){
+        menu_first_column = element;
+    }
+    if(element["name"]=="menu_second_column"){
+        menu_second_column = element;
+    }
+});
+
+
+
+---
+
+<html lang="en" class="scroll-smooth" id="noviceat">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+        <script is:inline src="https://www.google.com/recaptcha/api.js"></script>
+		<title>Novice</title>
+        <ViewTransitions />
+		
+	</head>
+	<body class="bg-sneg-white">
+		
+  <style>
+
+
+
+@font-face {
+    font-family: 'bebasNeuePro';
+    src: url('/fonts/b3/bebas_neue_pro_regular-webfont.woff2') format('woff2'),
+         url('/fonts/b3/bebas_neue_pro_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'bebasNeuePro';
+    src: url('/fonts/b3/bebas_neue_pro_italic-webfont.woff2') format('woff2'),
+         url('/fonts/b3/bebas_neue_pro_italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'bebasNeuePro';
+    src: url('/fonts/b3/bebas_neue_pro_light-webfont.woff2') format('woff2'),
+         url('/fonts/b3/bebas_neue_pro_light-webfont.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'bebasNeuePro';
+    src: url('/fonts/b3/bebas_neue_pro_bold-webfont.woff2') format('woff2'),
+         url('/fonts/b3/bebas_neue_pro_bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+
+
+@font-face {
+    font-family: 'bebasNeuePro';
+    src: url('/fonts/b3/bebas_neue_pro_bold_italic-webfont.woff2') format('woff2'),
+         url('/fonts/b3/bebas_neue_pro_bold_italic-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+  @font-face {
+      font-family: 'Lora';
+      src: url('/fonts/lora/lora-variablefont_wght-webfont.woff2') format('woff2'),
+          url('/fonts/lora/lora-variablefont_wght-webfont.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+  }
+
+  @font-face {
+      font-family: 'Lora';
+      src: url('/fonts/lora/lora-variablefont_wght-webfont.woff2') format('woff2'),
+          url('/fonts/lora/lora-variablefont_wght-webfont.woff') format('woff');
+      font-weight: 400;
+      font-style: italic;
+  }
+
+
+
+  </style>
+
+
+    <Header menu_left={menu_left} menu_right={menu_right} menu_first_column={menu_first_column} menu_second_column={menu_second_column}/>
+   
+        <slot />
+    </body>
+    <script src="../scripts/menu.js"></script>
+    <script src="../scripts/search.js"></script>
+    <script src="../scripts/cookieconsent-config.js"></script>
+    
+                          
+    
+
+    <Footer menu_left={menu_left} menu_right={menu_right}/>
+</html>

@@ -1,0 +1,92 @@
+---
+import QuarterBig from './elements/quarter.astro'
+
+import { getPostByCategoryBySlug,getOpinionPosts } from '../../lib/api';
+import { getNameForPostId } from '../../lib/special';
+import useFetch from "react-fetch-hook";
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+let datacatid = blckjsn?.data?.blockcategory;
+if (datacatid === undefined){
+	datacatid = '["6"]';
+}
+
+
+
+let num_of_slider_elements = blckjsn?.data?.num_of_slider_elements;
+if (num_of_slider_elements === undefined){
+	num_of_slider_elements = '8';
+}
+
+
+let articlesx = await getOpinionPosts(datacatid,parseInt(num_of_slider_elements));
+
+if(articlesx === undefined){
+	articlesx = new Array();
+}
+
+
+
+
+---
+<section class="bg-undef-lightgrey2 px-1 md:px-4 py-12 md:py-24">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		<h2 class="col-span-2 font-light text-5xl text-klopinj-blue mb-2 uppercase text-center">mnenje</h2>
+	</div>
+
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width swiper swiperopinion">
+		<div class="swiper-wrapper pt-20">
+			
+			{articlesx.map(function (article,k) {
+				
+					return (
+						<QuarterBig article={article} style="opinion" isslider={true} bg={true}/>
+					);
+			
+	
+			})}
+			
+		</div>
+		<div class="swiper-button-prev"></div>
+		<div class="swiper-button-next"></div>
+	</div>
+</section>
+
+
+<script>
+	import Swiper from 'swiper';
+	import 'swiper/css/bundle';
+	document.addEventListener('astro:page-load', () => {
+	// import Swiper bundle with all modules installed
+	
+	
+	// import styles bundle
+	
+	
+	// init Swiper:
+	const swiper = new Swiper('.swiperopinion', {
+	  // Optional parameters
+	  direction: 'horizontal',
+	  loop: true,
+	  slidesPerView: 1,
+	  spaceBetween: 16,
+	
+	  // Navigation arrows
+	  navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	  },
+	
+	  breakpoints: {
+		480: {
+		  slidesPerView: 2,
+		},
+		768: {
+		  slidesPerView: 4,
+		}
+	  }
+	
+	});
+});

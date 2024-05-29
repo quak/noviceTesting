@@ -1,0 +1,41 @@
+---
+
+import One from './elements/one.astro'
+import { getPostByCategoryById } from '../../lib/api';
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+let datacatid = blckjsn?.data?.blockcategory;
+if (datacatid === undefined){
+	datacatid = '["6"]';
+}
+
+let articles = await getPostByCategoryById(datacatid,1);
+
+if(articles === undefined){
+	articles = new Array();
+}
+
+
+---
+
+<section class="bg-sele-ivory px-1 md:px-4 py-12 md:py-24">
+	<div class="mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		<h2 class="col-span-2 font-light text-5xl text-klopinj-blue mb-2 uppercase text-center">Tema tedna</h2>
+	</div>
+	<div class="grid grid-cols-2 gap-4 mx-auto lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		
+			{articles.map(function (article,k) {
+				
+					return (
+							
+						<One article={article} style="fullteaser"/>
+					
+					);
+	
+			})}
+
+	</div>
+</section>
+

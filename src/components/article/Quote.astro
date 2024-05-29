@@ -1,0 +1,53 @@
+---
+
+import { getImageByIds } from '../../lib/api';
+const {block} = Astro.props;
+
+const parsedJSON = JSON.parse(block.attributesJSON);
+
+
+let icon = '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-info" viewBox="0 0 16 16"><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>';
+if(parsedJSON.data.icon == "doubleright"){
+     icon = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/><path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/></svg>';
+}
+if(parsedJSON.data.icon == "doubleleft"){
+     icon = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/><path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>';
+}
+
+---
+
+<div class="flex justify-end">
+
+    <div class="sm:basis-3/4 w-full flex flex-col justify-end">
+        <div class="font-serif text-lg hyphens-none">
+            
+            
+            <blockquote class="my-6 sm:float-left max-w-sm mx-auto col-lg-5 mr-lg-4 p-0 mt-lg-0 py-6 pl-0 sm:pr-8 sm:mt-16 sm:-ml-40 lg:-ml-64" style="shape-outside: border-box;">
+                <span class="block text-center mx-auto  w-full">
+                    <span class="block text-center mx-auto w-full">
+                        <span class="block border-b border-black"></span>
+                    </span>  
+                    
+                    <span class="flex mx-auto -m-3 justify-center">
+                        <span class="group -m-1 p-1 bg-sneg-white " aria-label="" ><Fragment set:html={icon} /></span>
+                    </span>
+                </span>    
+                 
+                <span class="block py-8 pb-4">
+                    <span class="max-w-xs block italic text-papez-purple">{parsedJSON.data.quote}</span>
+                    <span class="flex justify-end">
+                        <span class="mt-2 text-base">{parsedJSON.data.source}</span>
+                    </span>
+                </span>
+
+                <span class="block text-center mx-auto w-full">
+                    <span class="block border-b border-black"></span>
+                </span>  
+            </blockquote>
+            
+            <span><Fragment set:html={parsedJSON.data.paragraph} /></span>
+        </div>
+            
+    </div>
+
+</div>

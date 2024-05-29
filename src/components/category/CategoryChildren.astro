@@ -1,0 +1,51 @@
+---
+import { getPostByCategoryBySlug } from '../../lib/api';
+import { Debug } from 'astro:components';
+
+import { getChildren } from '../../lib/children';
+
+const {block} = Astro.props;
+
+const blckjsn = JSON.parse(block.attributesJSON);
+
+let children = await getChildren();
+
+if(children === undefined){
+	children = new Array();
+}
+---
+
+
+
+<section class=" px-1 md:px-4 py-12">
+	<div class=" mx-auto  lg:max-w-screen-lg max-w-7xl 2xl:max-w-nov-width">
+		
+			<div class="grid grid-cols-2 gap-6">
+				
+				{children.map(function (article) {
+				
+					return (
+						<div class="flex flex-col justfiy-center bg-sele-ivory px-2 py-4 col-span-1">
+							
+							<div>
+								<p class="text-4xl text-center font-light">-</p>
+								<h2 class="text-5xl text-center font-bold py-4">{article.post_title}</h2>
+							</div>
+							<div class="flex justify-around">
+								<a href={article?.acf?.pdf?.url} target="_blank">
+									<img class="mx-auto  max-h-48" src="/tmpimages/svgs/pdf.svg"/>
+								</a>
+								<a href={article?.acf?.zip_autogen?.url} download={article?.acf?.zip_autogen?.url}>
+									<img class="mx-auto  max-h-48" src="/tmpimages/svgs/dwn.svg"/>
+								</a>
+							</div>
+							
+						</div>
+					);
+	
+				})}
+				
+			</div>
+
+	</div>
+</section>
